@@ -16,14 +16,16 @@ import java.util.*
 
 class Forecast : AppCompatActivity() {
 
+    //This Forecast Activity is used to show the future weather stats
+
+    //API gained from OpenWeatherMap API
     val API: String = "3a720b3a3e177f56b462b62605099cdf"
-    private lateinit var imageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forecast)
 
-
+        //button to return to MainActivity
         val button: Button = findViewById(R.id.toCurrent)
 
         button.setOnClickListener(){
@@ -38,16 +40,19 @@ class Forecast : AppCompatActivity() {
 
 
     inner class weatherDetails() : AsyncTask<String, Void, String>() {
+        //checkDate Global var is used later to populate each cell
         var checkDate:String? = "null"
 
         override fun onPreExecute() {
             super.onPreExecute()
+            //show progress bar and hide main view whilst loading data
             findViewById<ProgressBar>(R.id.idloading).visibility = View.VISIBLE
             findViewById<RelativeLayout>(R.id.RelPar).visibility = View.GONE
 
         }
 
         override fun doInBackground(vararg p0: String?): String? {
+            //load in data from Openweathermap forecasted weather API
             var response: String?
             try {
                 response =
@@ -66,6 +71,9 @@ class Forecast : AppCompatActivity() {
             var index: Int = 0
             var count: Int = 0
 
+            //load elements required from JSON, while loop ensures that each cell gets its own data
+            //which will in turn be used for each cell, at count 3 the final 4th cell is filled therefore ending the
+            //while loop
             while (count < 4) {
                 try {
                     val jsonObj = JSONObject(result)
@@ -84,12 +92,14 @@ class Forecast : AppCompatActivity() {
                     val windSpeedAndDir = "Wind: $windDirect at $windSpeed"
 
 
+                    //removes the unnecessary time element from string
                     val strs = currentDate.split(" ").toTypedArray()
                     Log.d("Debug", "did it work: " + strs[0])
 
                     currentDate = strs[0]
 
 
+                    //this ensures that each text element is filled correctly and nothing is overwritten
                     when {
                         checkDate == currentDate -> {
                             index++
@@ -137,6 +147,7 @@ class Forecast : AppCompatActivity() {
 
 
         fun getCardinalDirections(degrees: String): String {
+            //Function used to change the less UX friendly degrees into cardinal directions
             val degasInt = degrees.toDouble()
             val directions = arrayOf("↑ N", "↗ NE", "→ E", "↘ SE", "↓ S", "↙ SW", "← W", "↖ NW")
             val doubAngle = (Math.round(degasInt / 45)) % 8

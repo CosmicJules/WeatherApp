@@ -351,7 +351,6 @@
   </ScrollView>
 
 
-
   <Button
 
       android:id="@+id/toCurrent"
@@ -361,7 +360,7 @@
       android:layout_alignParentBottom="true"
       android:layout_marginLeft="10dp"
       android:padding="10dp"
-      android:text="previous">
+      android:text="Current Weather">
 
   </Button>
 
